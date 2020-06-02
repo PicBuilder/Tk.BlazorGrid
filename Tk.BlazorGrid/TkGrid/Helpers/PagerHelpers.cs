@@ -77,7 +77,7 @@ namespace TkGrid
         }
 
         //custom
-        public static Pager ApplyPageDisplay(Pager pager)
+        public static GridBase ApplyPageDisplay(GridBase pager)
         {
             pager.EnableSearch = true;
             pager.CurrentPage = PagerHelpers.GetCurrentPage(pager.CurrentPage.ToString());

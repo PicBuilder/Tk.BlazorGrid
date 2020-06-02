@@ -17,27 +17,27 @@
 }
 else
 {
-    <PagerDisplayHeader pager="pager" OnPageSizeChange="GetPageData" OnPageSearch="GetPageData" />
+    <GridHeader pager="pager" OnPageSizeChange="GetPageData" OnPageSearch="GetPageData" />
 
     <table class="table">
         <thead>
             <tr>
-                <PagerDisplayColumnHeader pager="pager"
+                <GridColumnHeader pager="pager"
                                           columnName="@nameof(weatherForecast.Date)"
                                           displayName="Date"
                                           OnSort="GetPageData" />
 
-                <PagerDisplayColumnHeader pager="pager"
+                <GridColumnHeader pager="pager"
                                           columnName="@nameof(weatherForecast.TemperatureC)"
                                           displayName="Temp. (C)"
                                           OnSort="GetPageData" />
 
-                <PagerDisplayColumnHeader pager="pager"
+                <GridColumnHeader pager="pager"
                                           columnName="@nameof(weatherForecast.TemperatureF)"
                                           displayName="Temp. (F)"
                                           OnSort="GetPageData" />
 
-                <PagerDisplayColumnHeader pager="pager"
+                <GridColumnHeader pager="pager"
                                           columnName="@nameof(weatherForecast.Summary)"
                                           displayName="Summary"
                                           OnSort="GetPageData" />     
@@ -62,11 +62,11 @@ else
         </tbody>
     </table>
 
-    <PagerDisplayFooter pager="pager" OnPageClick="GetPageData" />
+    <GridFooter pager="pager" OnPageClick="GetPageData" />
 }
 
 @code {
-    protected Pager pager { get; set; } = new Pager();
+    protected GridBase pager { get; set; } = new GridBase();
     protected GridData<WeatherForecast> weatherForecasts;
     protected WeatherForecast weatherForecast;
 

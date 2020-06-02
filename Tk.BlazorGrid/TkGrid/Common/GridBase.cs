@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TkGrid
 {
-	public class Pager
+	public class GridBase
 	{
 		//repository needed stuff
 		public int TotalCount { get; set; }

@@ -22,7 +22,7 @@
 
 @code {
     [Parameter]
-    public Pager pager { get; set; }
+    public GridBase pager { get; set; }
 
     [Parameter]
     public string columnName { get; set; }
@@ -31,7 +31,7 @@
     public string displayName { get; set; }
 
     [Parameter]
-    public EventCallback<Pager> OnSort { get; set; }
+    public EventCallback<GridBase> OnSort { get; set; }
 
     protected async Task DoSort()
     {
