@@ -1,5 +1,5 @@
 ﻿
-<EditForm Model="@pager">
+<EditForm Model="@gridBase">
     <div class="form-row mb-3">
         <div class="col-1">
             <select id="pageValue" @onchange="DoPageSizeChange" class="form-control">
@@ -10,9 +10,9 @@
             </select>
         </div>
         <div class="col-11">
-            @if (pager.EnableSearch)
+            @if (gridBase.EnableSearch)
             {
-            <InputText id="searchText" @bind-Value="pager.Search" @onblur="DoPageSearch" placeholder="Search by Summary only (case sensitive + Tab to execute action)" class="form-control" />
+            <InputText id="searchText" @bind-Value="gridBase.Search" @onblur="DoPageSearch" placeholder="Search by Summary only (case sensitive + Tab to execute action)" class="form-control" />
             }
         </div>
     </div>
@@ -20,7 +20,7 @@
 
 @code {
     [Parameter]
-    public GridBase pager { get; set; }
+    public GridBase gridBase { get; set; }
 
     [Parameter]
     public EventCallback<GridBase> OnPageSizeChange { get; set; }
@@ -31,12 +31,12 @@
 
     protected async Task DoPageSizeChange(ChangeEventArgs e)
     {   
-        pager.PageSize = Convert.ToInt32(e.Value.ToString());
-        await OnPageSizeChange.InvokeAsync(pager);
+        gridBase.PageSize = Convert.ToInt32(e.Value.ToString());
+        await OnPageSizeChange.InvokeAsync(gridBase);
     }
 
     protected async Task DoPageSearch()
     {
-        await OnPageSearch.InvokeAsync(pager);
+        await OnPageSearch.InvokeAsync(gridBase);
     }
 }

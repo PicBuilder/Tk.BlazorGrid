@@ -2,9 +2,9 @@
 <th>
     <span>@displayName</span> 
     <button type="button" class="btn btn-link" @onclick="DoSort">
-        @if (columnName == pager.SortColumnName)
+        @if (columnName == gridBase.SortColumnName)
         {
-            @if (pager.SortDirection == "asc")
+            @if (gridBase.SortDirection == "asc")
             {
                 <span class="oi oi-sort-ascending small" aria-hidden="true"></span>
             }
@@ -22,7 +22,7 @@
 
 @code {
     [Parameter]
-    public GridBase pager { get; set; }
+    public GridBase gridBase { get; set; }
 
     [Parameter]
     public string columnName { get; set; }
@@ -35,19 +35,19 @@
 
     protected async Task DoSort()
     {
-        pager.SortColumnName = columnName;
+        gridBase.SortColumnName = columnName;
 
-        switch (pager.SortDirection)
+        switch (gridBase.SortDirection)
         {
             case "asc":
-                pager.SortDirection = "desc";
+                gridBase.SortDirection = "desc";
                 break;
             default:
-                pager.SortDirection = "asc";
+                gridBase.SortDirection = "asc";
                 break;
         }
 
-        await OnSort.InvokeAsync(pager);
+        await OnSort.InvokeAsync(gridBase);
     }
 }
 

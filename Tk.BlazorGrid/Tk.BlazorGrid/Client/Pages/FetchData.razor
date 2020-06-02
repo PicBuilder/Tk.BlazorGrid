@@ -17,27 +17,27 @@
 }
 else
 {
-    <GridHeader pager="grid" OnPageSizeChange="GetPageData" OnPageSearch="GetPageData" />
+    <GridHeader gridBase="grid" OnPageSizeChange="GetPageData" OnPageSearch="GetPageData" />
 
     <table class="table">
         <thead>
             <tr>
-                <GridColumnHeader pager="grid"
+                <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.Date)"
                                           displayName="Date"
                                           OnSort="GetPageData" />
 
-                <GridColumnHeader pager="grid"
+                <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.TemperatureC)"
                                           displayName="Temp. (C)"
                                           OnSort="GetPageData" />
 
-                <GridColumnHeader pager="grid"
+                <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.TemperatureF)"
                                           displayName="Temp. (F)"
                                           OnSort="GetPageData" />
 
-                <GridColumnHeader pager="grid"
+                <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.Summary)"
                                           displayName="Summary"
                                           OnSort="GetPageData" />     
@@ -62,7 +62,7 @@ else
         </tbody>
     </table>
 
-    <GridFooter pager="grid" OnPageClick="GetPageData" />
+    <GridFooter gridBase="grid" OnPageClick="GetPageData" />
 }
 
 @code {
