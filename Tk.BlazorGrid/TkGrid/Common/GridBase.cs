@@ -29,5 +29,17 @@ namespace TkGrid
 		//sort
 		public string SortColumnName { get; set; } = "Id";
 		public string SortDirection { get; set; } = "desc";
+
+		//custom
+		public GridBase ApplyGrid()
+		{
+			EnableSearch = true;
+			CurrentPage = PagerHelpers.GetCurrentPage(CurrentPage.ToString());
+			PagerTotalCount = PagerHelpers.GetTotalPages(PageSize, TotalCount);
+			MinPage = PagerHelpers.GetMinPageToRender(MaxPages, PagerTotalCount, CurrentPage);
+			MaxPage = PagerHelpers.GetMaxPageToRender(MaxPages, PagerTotalCount, CurrentPage);
+
+			return this;
+		}
 	}
 }

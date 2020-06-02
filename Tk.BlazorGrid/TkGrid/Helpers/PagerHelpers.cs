@@ -76,16 +76,16 @@ namespace TkGrid
             }
         }
 
-        //custom
-        public static GridBase ApplyPageDisplay(GridBase pager)
-        {
-            pager.EnableSearch = true;
-            pager.CurrentPage = PagerHelpers.GetCurrentPage(pager.CurrentPage.ToString());
-            pager.PagerTotalCount = PagerHelpers.GetTotalPages(pager.PageSize, pager.TotalCount);
-            pager.MinPage = PagerHelpers.GetMinPageToRender(pager.MaxPages, pager.PagerTotalCount, pager.CurrentPage);
-            pager.MaxPage = PagerHelpers.GetMaxPageToRender(pager.MaxPages, pager.PagerTotalCount, pager.CurrentPage);
+        ////custom
+        //public static GridBase ApplyGrid(GridBase pager)
+        //{
+        //    pager.EnableSearch = true;
+        //    pager.CurrentPage = PagerHelpers.GetCurrentPage(pager.CurrentPage.ToString());
+        //    pager.PagerTotalCount = PagerHelpers.GetTotalPages(pager.PageSize, pager.TotalCount);
+        //    pager.MinPage = PagerHelpers.GetMinPageToRender(pager.MaxPages, pager.PagerTotalCount, pager.CurrentPage);
+        //    pager.MaxPage = PagerHelpers.GetMaxPageToRender(pager.MaxPages, pager.PagerTotalCount, pager.CurrentPage);
 
-            return pager;
-        }
+        //    return pager;
+        //}
     }
 }
