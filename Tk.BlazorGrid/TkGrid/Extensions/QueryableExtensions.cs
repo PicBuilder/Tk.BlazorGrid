@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Tk.BlazorGrid.Shared.Extensions
+namespace TkGrid
 {
     public static class QueryableExtensions
     {

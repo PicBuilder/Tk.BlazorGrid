@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tk.BlazorGrid.Server.Data;
 using Tk.BlazorGrid.Shared;
-using Tk.BlazorGrid.Shared.Extensions;
+using TkGrid;
 
 namespace Tk.BlazorGrid.Server.Controllers
 {
@@ -25,14 +25,14 @@ namespace Tk.BlazorGrid.Server.Controllers
 
         // GET: api/Weather
         [HttpGet]
-        public async Task<ActionResult<WeatherForecastsDto>> GetWeatherForecasts(string search,
+        public async Task<ActionResult<GridData<WeatherForecast>>> GetWeatherForecasts(string search,
             int page = 1,
             int pageSize = 10,
             string sortColumnName = "Id",
             string sortDirection = "desc"
             )
         {
-            WeatherForecastsDto weatherForecasts = new WeatherForecastsDto();
+            GridData<WeatherForecast> weatherForecasts = new GridData<WeatherForecast>();
             List<WeatherForecast> forecasts = new List<WeatherForecast>();
 
             Expression<Func<WeatherForecast, bool>> searchCondition = x => x.Summary.Contains(search);
@@ -64,7 +64,7 @@ namespace Tk.BlazorGrid.Server.Controllers
                     break;
             }
 
-            weatherForecasts.WeatherForecasts.AddRange(forecasts);
+            weatherForecasts.Data.AddRange(forecasts);
             weatherForecasts.TotalCount = await _context.WeatherForecasts.WhereIf(!string.IsNullOrEmpty(search), searchCondition).CountAsync();
             weatherForecasts.PageSize = pageSize;
 

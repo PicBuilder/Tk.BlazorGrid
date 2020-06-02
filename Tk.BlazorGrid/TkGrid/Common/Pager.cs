@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tk.BlazorGrid.Shared.Common
+namespace TkGrid
 {
 	public class Pager
 	{

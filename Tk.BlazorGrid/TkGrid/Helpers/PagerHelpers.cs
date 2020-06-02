@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Tk.BlazorGrid.Shared.Common;
 
-namespace Tk.BlazorGrid.Shared.Helpers
+namespace TkGrid
 {
     public static class PagerHelpers
     {
