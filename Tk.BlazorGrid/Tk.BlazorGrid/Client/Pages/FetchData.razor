@@ -6,23 +6,40 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (weatherForecasts == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <PagerDisplayHeader pager="pager" OnPageSizeChange="GetPageData" OnPageSearch="GetPageData" />
+
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <PagerDisplayColumnHeader pager="pager"
+                                          columnName="@nameof(weatherForecast.Date)"
+                                          displayName="Date"
+                                          OnSort="GetPageData" />
+
+                <PagerDisplayColumnHeader pager="pager"
+                                          columnName="@nameof(weatherForecast.Date)"
+                                          displayName="Temp. (C)"
+                                          OnSort="GetPageData" />
+
+                <PagerDisplayColumnHeader pager="pager"
+                                          columnName="@nameof(weatherForecast.Date)"
+                                          displayName="Temp. (F)"
+                                          OnSort="GetPageData" />
+
+                <PagerDisplayColumnHeader pager="pager"
+                                          columnName="@nameof(weatherForecast.Date)"
+                                          displayName="Summary"
+                                          OnSort="GetPageData" />               
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var forecast in weatherForecasts.WeatherForecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
@@ -33,14 +50,32 @@ else
             }
         </tbody>
     </table>
+
+    <PagerDisplayFooter pager="pager" OnPageClick="GetPageData" />
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+    protected Pager pager { get; set; } = new Pager();
+    protected WeatherForecastsDto weatherForecasts;
+    protected WeatherForecast weatherForecast;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        await GetPageData();
+    }
+
+    protected async Task GetPageData()
+    {
+        //Console.WriteLine(pager.SortColumnName +" "+ pager.SortDirection);
+
+        weatherForecasts = await Http.GetFromJsonAsync<WeatherForecastsDto>($"WeatherForecast?search={pager.Search}&page={pager.CurrentPage}&pageSize={pager.PageSize}&sortColumnName={pager.SortColumnName}&sortDirection={pager.SortDirection}");
+
+        if (weatherForecasts != null)
+        {
+            pager.TotalCount = weatherForecasts.TotalCount;
+            PagerHelpers.ApplyPageDisplay(pager);
+        }
     }
 
 }

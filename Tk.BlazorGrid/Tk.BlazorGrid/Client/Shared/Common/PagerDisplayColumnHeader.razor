@@ -1,0 +1,53 @@
+﻿
+<th>
+    <span>@displayName</span> 
+    <button type="button" class="btn btn-link" @onclick="DoSort">
+        @if (columnName == pager.SortColumnName)
+        {
+            @if (pager.SortDirection == "asc")
+            {
+                <span class="oi oi-sort-ascending small" aria-hidden="true"></span>
+            }
+            else
+            {
+                <span class="oi oi-sort-descending small" aria-hidden="true"></span>
+            }
+        }
+        else
+        {
+            <span class="oi oi-sort-ascending text-secondary small" aria-hidden="true"></span>
+        }
+    </button>
+</th>
+
+@code {
+    [Parameter]
+    public Pager pager { get; set; }
+
+    [Parameter]
+    public string columnName { get; set; }
+
+    [Parameter]
+    public string displayName { get; set; }
+
+    [Parameter]
+    public EventCallback<Pager> OnSort { get; set; }
+
+    protected async Task DoSort()
+    {
+        pager.SortColumnName = columnName;
+
+        switch (pager.SortDirection)
+        {
+            case "asc":
+                pager.SortDirection = "desc";
+                break;
+            default:
+                pager.SortDirection = "asc";
+                break;
+        }
+
+        await OnSort.InvokeAsync(pager);
+    }
+}
+

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Shared\Tk.BlazorGrid.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared\Common\" />
+  </ItemGroup>
+
 </Project>

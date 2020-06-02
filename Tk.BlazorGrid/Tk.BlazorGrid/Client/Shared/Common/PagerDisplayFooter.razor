@@ -1,0 +1,49 @@
+﻿@using Tk.BlazorGrid.Shared.Helpers
+
+@if (pager.CurrentPage <= pager.MaxPage)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (PagerHelpers.ShowLeftPagerButton(pager.MaxPages, pager.PagerTotalCount, pager.CurrentPage))
+            {
+                <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(pager.MinPage-1))">Previous</button></li>
+            }
+
+            @for (var i = pager.MinPage; i <= pager.MaxPage; i++)
+            {
+                var tempint = i;
+                if (PagerHelpers.IsActivePage(pager.CurrentPage, i))
+                {
+                    <li class="page-item active"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(tempint))">@i</button></li>
+                }
+                else
+                {
+                    <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(tempint))">@i</button></li>
+                }
+            }
+
+            @if (PagerHelpers.ShowRightPagerButton(pager.MaxPages, pager.PagerTotalCount, pager.CurrentPage))
+            {
+                <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(pager.MaxPage+1))">Next</button></li>
+            }
+        </ul>
+    </nav>
+}
+
+<div class="small">
+    @pager.TotalCount result(s) found
+</div>
+
+@code {
+    [Parameter]
+    public Pager pager { get; set; }
+
+    [Parameter]
+    public EventCallback<Pager> OnPageClick { get; set; }
+
+    protected async Task GetPagedData(int clickedPage = 1)
+    {        
+        pager.CurrentPage = clickedPage;
+        await OnPageClick.InvokeAsync(pager);
+    }
+}

@@ -1,0 +1,42 @@
+﻿
+<EditForm Model="@pager">
+    <div class="form-row mb-3">
+        <div class="col-1">
+            <select id="pageValue" @onchange="DoPageSizeChange" class="form-control">
+                <option selected value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+        <div class="col-11">
+            @if (pager.EnableSearch)
+            {
+            <InputText id="searchText" @bind-Value="pager.Search" @onblur="DoPageSearch" placeholder="Search by Summary only (case sensitive + Tab to execute action)" class="form-control" />
+            }
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public Pager pager { get; set; }
+
+    [Parameter]
+    public EventCallback<Pager> OnPageSizeChange { get; set; }
+
+    [Parameter]
+    public EventCallback<Pager> OnPageSearch { get; set; }
+
+
+    protected async Task DoPageSizeChange(ChangeEventArgs e)
+    {   
+        pager.PageSize = Convert.ToInt32(e.Value.ToString());
+        await OnPageSizeChange.InvokeAsync(pager);
+    }
+
+    protected async Task DoPageSearch()
+    {
+        await OnPageSearch.InvokeAsync(pager);
+    }
+}
