@@ -33,6 +33,7 @@ namespace Tk.BlazorGrid.Server.Controllers
             )
         {
             WeatherForecastsDto weatherForecasts = new WeatherForecastsDto();
+            List<WeatherForecast> forecasts = new List<WeatherForecast>();
 
             Expression<Func<WeatherForecast, bool>> searchCondition = x => x.Summary.Contains(search);
             bool orderByDescending = true;
@@ -41,11 +42,27 @@ namespace Tk.BlazorGrid.Server.Controllers
                 orderByDescending = false;
             }
 
-            var forecasts = await _context.WeatherForecasts
-                  .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
-                  .PageBy(x => x.Date, page, pageSize, orderByDescending)
-                  .ToListAsync();
-
+            switch (sortColumnName)
+            {
+                case "Date":
+                    forecasts = await _context.WeatherForecasts
+                      .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
+                      .PageBy(x => x.Date, page, pageSize, orderByDescending)
+                      .ToListAsync();
+                    break;
+                case "Summary":
+                    forecasts = await _context.WeatherForecasts
+                      .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
+                      .PageBy(x => x.Summary, page, pageSize, orderByDescending)
+                      .ToListAsync();
+                    break;
+                default:
+                    forecasts = await _context.WeatherForecasts
+                      .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
+                      .PageBy(x => x.Id, page, pageSize, orderByDescending)
+                      .ToListAsync();
+                    break;
+            }
 
             weatherForecasts.WeatherForecasts.AddRange(forecasts);
             weatherForecasts.TotalCount = await _context.WeatherForecasts.WhereIf(!string.IsNullOrEmpty(search), searchCondition).CountAsync();

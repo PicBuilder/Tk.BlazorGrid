@@ -1,0 +1,33 @@
+﻿@page "/weatherforecast/edit/{id}"
+@using Tk.BlazorGrid.Shared
+@inject HttpClient Http
+
+<h3>Weather Forecast Edit - @Id</h3>
+<p>Example for getting information for particular record to perform CRUD Operations</p>
+<h5>Record Details</h5>
+@if (weatherForecast == null)
+{
+<p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        <li>@weatherForecast.Date</li>
+        <li>@weatherForecast.Summary</li>
+        <li>@weatherForecast.TemperatureC</li>
+        <li>@weatherForecast.TemperatureF</li>
+    </ul>
+
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    public Tk.BlazorGrid.Shared.WeatherForecast weatherForecast { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        weatherForecast = await Http.GetFromJsonAsync<WeatherForecast>($"WeatherForecast/{Id}");
+    }
+}

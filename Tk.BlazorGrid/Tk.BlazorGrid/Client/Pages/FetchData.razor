@@ -5,6 +5,10 @@
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
+<ul>
+    <li>Uses Bootstrap 4 table and form control styling</li>
+    <li>Server side paging only (only min specified records are returned)</li>
+</ul>
 
 @if (weatherForecasts == null)
 {
@@ -23,30 +27,36 @@ else
                                           OnSort="GetPageData" />
 
                 <PagerDisplayColumnHeader pager="pager"
-                                          columnName="@nameof(weatherForecast.Date)"
+                                          columnName="@nameof(weatherForecast.TemperatureC)"
                                           displayName="Temp. (C)"
                                           OnSort="GetPageData" />
 
                 <PagerDisplayColumnHeader pager="pager"
-                                          columnName="@nameof(weatherForecast.Date)"
+                                          columnName="@nameof(weatherForecast.TemperatureF)"
                                           displayName="Temp. (F)"
                                           OnSort="GetPageData" />
 
                 <PagerDisplayColumnHeader pager="pager"
-                                          columnName="@nameof(weatherForecast.Date)"
+                                          columnName="@nameof(weatherForecast.Summary)"
                                           displayName="Summary"
-                                          OnSort="GetPageData" />               
+                                          OnSort="GetPageData" />     
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var forecast in weatherForecasts.WeatherForecasts)
             {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
+            <tr>
+                <td>@forecast.Date.ToShortDateString()</td>
+                <td>@forecast.TemperatureC</td>
+                <td>@forecast.TemperatureF</td>
+                <td>@forecast.Summary</td>
+                <td>
+                    <a href="@($"WeatherForecast/edit/{forecast.Id}")" class="btn btn-link">
+                        <span class="oi oi-pencil text-secondary small" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -60,15 +70,12 @@ else
     protected WeatherForecast weatherForecast;
 
     protected override async Task OnInitializedAsync()
-    {
-        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    {        
         await GetPageData();
     }
 
     protected async Task GetPageData()
     {
-        //Console.WriteLine(pager.SortColumnName +" "+ pager.SortDirection);
-
         weatherForecasts = await Http.GetFromJsonAsync<WeatherForecastsDto>($"WeatherForecast?search={pager.Search}&page={pager.CurrentPage}&pageSize={pager.PageSize}&sortColumnName={pager.SortColumnName}&sortDirection={pager.SortDirection}");
 
         if (weatherForecasts != null)
