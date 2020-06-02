@@ -22,6 +22,9 @@ Visual Studio 2019 with .Net Core 3.1 installed
 - Add refrences for above files to _Imports.razor.
 - Customize UI per fetchdata.razor
 
+## Grid UI preview
+![grid-preview](docs/gridui.PNG)
+
 ## Acknowledgements
 This web application is based on these projects:
 
