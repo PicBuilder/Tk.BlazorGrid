@@ -1,0 +1,91 @@
+﻿<div>
+    @foreach (var item in MultiSelectItemsSelected.Data)
+    {
+        <div class="btn-group">
+            <button type="button" class="btn btn-light btn-sm">@item.Text</button>
+            <button type="button"
+                    class="btn btn-light text-danger btn-sm"
+                    @onclick="@(async () => await removeItem(@item.Id))">
+                &times;
+            </button>
+        </div>
+    }
+</div>
+
+<div class="mt-2">
+    <div class="form-group">        
+        <select id="multiListItems"
+                @onchange="addItem"
+                class="form-control">
+            @*<option selected value="-1"> Choose One</option>*@
+            @foreach (var item in MultiSelectItems.Data)
+            {
+                <option value="@item.Id">@item.Text</option>
+            }
+        </select>
+        @if (isSelected)
+        {
+            <label class="text-danger">Item has already been selected!</label>
+        }
+    </div>
+</div>
+
+
+@code{
+    public bool isSelected { get; set; } = false;
+
+    public string selectedItemId { get; set; }
+
+    public MultiSelectItem tempItem { get; set; }
+
+    [Parameter]
+    public MultiSelectItems MultiSelectItems { get; set; }
+
+    [Parameter]
+    public MultiSelectItemsSelected MultiSelectItemsSelected { get; set; }
+
+    [Parameter]
+    public EventCallback<MultiSelectItemsSelected> OnItemClick { get; set; }
+
+    //protected override void OnInitialized()
+    //{
+    //    if (MultiSelectItems != null)
+    //    {
+    //        foreach (var item in MultiSelectItems.Data)
+    //        {
+    //            Console.WriteLine(item.Text);
+    //        }
+
+    //    }
+    //}
+
+    protected async Task removeItem(string Id)
+    {
+        if (MultiSelectItemsSelected != null)
+        {
+            MultiSelectItem removeItem;
+            removeItem = MultiSelectItemsSelected.Data.Where(x => x.Id == Id).FirstOrDefault();
+
+            if (removeItem != null)
+            {
+                MultiSelectItemsSelected.Data.Remove(removeItem);
+            }
+        }
+
+        await OnItemClick.InvokeAsync(MultiSelectItemsSelected);
+    }
+
+    protected void addItem(ChangeEventArgs e)
+    {
+        MultiSelectItem addItemRecord;
+        addItemRecord = MultiSelectItems.Data.Where(x => x.Id == e.Value.ToString()).FirstOrDefault();
+        if (addItemRecord != null)
+        {
+            isSelected = MultiSelectItemsSelected.Data.Any(x => x.Id == addItemRecord.Id);
+            if (!isSelected)
+            {
+                MultiSelectItemsSelected.Data.Add(addItemRecord);
+            }
+        }
+    }
+}

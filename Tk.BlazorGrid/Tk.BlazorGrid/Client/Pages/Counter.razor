@@ -6,11 +6,42 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<div class="col-md-12 mt-3">
+    <MultiSelectLayout 
+                       MultiSelectItems="currencyList" 
+                       MultiSelectItemsSelected="selectedCurrencies" />
+</div>
+
 @code {
     private int currentCount = 0;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    public MultiSelectItems currencyList { get; set; }
+    public MultiSelectItemsSelected selectedCurrencies { get; set; }
+
+    protected override void OnInitialized()
+    {
+        InitTestData();
+    }
+
+    protected void InitTestData()
+    {
+        currencyList = new MultiSelectItems();
+        //source list of all items user can select from
+        currencyList.Data.Add(new MultiSelectItem("1", "USD"));
+        currencyList.Data.Add(new MultiSelectItem("2", "CAD"));
+        currencyList.Data.Add(new MultiSelectItem("3", "NSD"));
+        currencyList.Data.Add(new MultiSelectItem("4", "AUD"));
+        currencyList.Data.Add(new MultiSelectItem("5", "JPY"));
+        currencyList.Data.Add(new MultiSelectItem("6", "EUR"));
+
+        //test data assuming the user has already selected a few items
+        selectedCurrencies = new MultiSelectItemsSelected();
+        selectedCurrencies.Data.Add(new MultiSelectItem("1", "USD"));
+        selectedCurrencies.Data.Add(new MultiSelectItem("4", "AUD"));
     }
 }

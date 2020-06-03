@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\TkGrid\TkGrid.csproj" />
+    <ProjectReference Include="..\..\TkMultiSelect\TkMultiSelect.csproj" />
     <ProjectReference Include="..\Shared\Tk.BlazorGrid.Shared.csproj" />
   </ItemGroup>
 
