@@ -13,10 +13,8 @@
 </div>
 
 <div class="mt-2">
-    <div class="form-group">        
-        <select id="multiListItems"
-                @onchange="addItem"
-                class="form-control">
+    <div class="form-group">
+        <select id="multiListItems" @onchange="addItem" class="form-control">
             @*<option selected value="-1"> Choose One</option>*@
             @foreach (var item in MultiSelectItems.Data)
             {
