@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tk.BlazorGrid.Shared", "Tk.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TkGrid", "TkGrid\TkGrid.csproj", "{721FAB6D-7606-4B89-BCA0-60BDEBB351A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TkMultiSelect", "TkMultiSelect\TkMultiSelect.csproj", "{F6FFFBBD-CF0A-4F0A-855D-1BB6FC32144A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TkMultiSelect", "TkMultiSelect\TkMultiSelect.csproj", "{F6FFFBBD-CF0A-4F0A-855D-1BB6FC32144A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
