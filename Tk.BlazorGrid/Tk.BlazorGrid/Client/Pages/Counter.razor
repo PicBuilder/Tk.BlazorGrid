@@ -7,8 +7,13 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 <div class="col-md-12 mt-3">
-    <MultiSelectLayout MultiSelectItems="currencyList" />
+    <MultiSelectLayout MultiSelectItems="currencyList" OnItemClick="DoCurrencyListModelUpdate" />
 </div>
+
+<div class="col-md-12 mt-3">
+    <MultiSelectLayout MultiSelectItems="vegetablesList" OnItemClick="DoVegetablesListModelUpdate" />
+</div>
+
 
 @code {
     private int currentCount = 0;
@@ -20,9 +25,27 @@
 
     public MultiSelectItems currencyList { get; set; }
 
+    public MultiSelectItems vegetablesList { get; set; }
+
     protected override void OnInitialized()
     {
         InitTestData();
+    }
+
+    protected void DoCurrencyListModelUpdate()
+    {
+        foreach (var item in currencyList.Data)
+        {
+            Console.WriteLine(item.Id + " " + item.Text + " " + item.IsSelected);
+        }
+    }
+
+    protected void DoVegetablesListModelUpdate()
+    {
+        foreach (var item in vegetablesList.Data)
+        {
+            Console.WriteLine(item.Id + " " + item.Text + " " + item.IsSelected);
+        }
     }
 
     protected void InitTestData()
@@ -36,6 +59,15 @@
         currencyList.Data.Add(new MultiSelectItem("5", "JPY"));
         currencyList.Data.Add(new MultiSelectItem("6", "EUR"));
 
-        currencyList.Data.OrderBy(x => x.Text);
+
+        vegetablesList = new MultiSelectItems();
+        //source list of all items user can select from
+        vegetablesList.Data.Add(new MultiSelectItem("1", "Potatoes"));
+        vegetablesList.Data.Add(new MultiSelectItem("2", "Tomatoes", true, "101"));
+        vegetablesList.Data.Add(new MultiSelectItem("4", "Carrots", true, "102"));
+        vegetablesList.Data.Add(new MultiSelectItem("3", "Spinach"));
+        vegetablesList.Data.Add(new MultiSelectItem("5", "Beets"));
+        vegetablesList.Data.Add(new MultiSelectItem("6", "Radishes"));
+
     }
 }
