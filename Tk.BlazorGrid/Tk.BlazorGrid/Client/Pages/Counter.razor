@@ -36,7 +36,7 @@
     {
         foreach (var item in currencyList.Data)
         {
-            Console.WriteLine(item.Id + " " + item.Text + " " + item.IsSelected);
+            Console.WriteLine(item.Id + " " + item.Text + " " + item.IsSelected+" "+ item.DbKeyId);
         }
     }
 
@@ -44,7 +44,7 @@
     {
         foreach (var item in vegetablesList.Data)
         {
-            Console.WriteLine(item.Id + " " + item.Text + " " + item.IsSelected);
+            Console.WriteLine(item.Id + " " + item.Text + " " + item.IsSelected + " " + item.DbKeyId);
         }
     }
 
