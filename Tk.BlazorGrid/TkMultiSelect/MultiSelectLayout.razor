@@ -1,30 +1,35 @@
 ﻿<div>
-    @foreach (var item in MultiSelectItemsSelected.Data)
+    @foreach (var item in MultiSelectItems.Data)
     {
-        <div class="btn-group">
-            <button type="button" class="btn btn-light btn-sm">@item.Text</button>
-            <button type="button"
-                    class="btn btn-light text-danger btn-sm">
-                &times;
-            </button>
-        </div>
+        if (item.IsSelected)
+        {
+            <div class="btn-group">
+                <button type="button" class="btn btn-light btn-sm">@item.Text</button>
+                <button type="button"
+                        class="btn btn-light text-danger btn-sm"
+                        @onclick="@(async () => await ProcessMultiSelectItem(ItemAction.Remove, @item.Id))" >
+                    &times;
+                </button>
+            </div>
+        }
     }
 </div>
 
 <div class="mt-2">
     <select @bind="Selected" class="form-control">
         <option value="0"></option>
-        @foreach (var item in MultiSelectItemsDisplay.Data)
+        @foreach (var item in MultiSelectItems.Data)
         {
-            <option value="@item.Id">@item.Text</option>
+            if (!item.IsSelected)
+            {
+                <option value="@item.Id">@item.Text</option>
+            }
         }
     </select>
-    <div>selected value: @Captured</div>
+    @*<div>selected value: @Captured</div>*@
 </div>
 
 @code {
-    int _Selected;
-    int Captured;
 
     protected enum ItemAction
     {
@@ -32,44 +37,44 @@
         Remove
     }
 
-    public MultiSelectItems MultiSelectItemsDisplay { get; set; }
+    //string Captured;
+
+    int _Selected;
 
     [Parameter]
     public MultiSelectItems MultiSelectItems { get; set; }
 
     [Parameter]
-    public MultiSelectItemsSelected MultiSelectItemsSelected { get; set; }
-
-    [Parameter]
-    public EventCallback<MultiSelectItemsSelected> OnItemClick { get; set; }
-
-    protected override void OnInitialized()
-    {
-        InitMultiSelectItems();
-    }
-
-    protected void InitMultiSelectItems()
-    {
-        MultiSelectItemsDisplay = MultiSelectItems;
-        MultiSelectItemsDisplay.Data.OrderBy(x => x.Text);
-
-        if (MultiSelectItems != null && MultiSelectItemsSelected != null)
-        {
-            foreach (var selectedItem in MultiSelectItemsSelected.Data)
-            {
-                var itemRecord = MultiSelectItemsDisplay.Data.Where(x => x.Id == selectedItem.Id).FirstOrDefault();
-                MultiSelectItemsDisplay.Data.Remove(itemRecord);
-            }
-        }
-    }
+    public EventCallback<MultiSelectItems> OnItemClick { get; set; }
 
     private int Selected
     {
         get { return _Selected; }
         set
         {
-            Captured = value; //store the captured value
+            ProcessMultiSelectItem(ItemAction.Add, value.ToString());
             _Selected = 0;   //reset the drop down
         }
-    }   
+    }
+
+    protected async Task ProcessMultiSelectItem(ItemAction itemAction, string Id)
+    {
+        var item = MultiSelectItems.Data.SingleOrDefault(x => x.Id == Id);
+
+        switch (itemAction)
+        {
+            case ItemAction.Add:
+                item.IsSelected = true;
+                break;
+            case ItemAction.Remove:
+                item.IsSelected = false;
+                break;
+            default:
+                break;
+        }
+
+        //Captured = item.Text;
+        await OnItemClick.InvokeAsync(MultiSelectItems);
+    }
+
 }
