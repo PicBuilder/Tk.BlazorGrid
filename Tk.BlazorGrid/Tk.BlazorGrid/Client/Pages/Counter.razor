@@ -6,11 +6,11 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
-<div class="col-md-12 mt-3">
+<div class="mt-3">
     <MultiSelectLayout MultiSelectItems="currencyList" OnItemClick="DoCurrencyListModelUpdate" />
 </div>
 
-<div class="col-md-12 mt-3">
+<div class="mt-3">
     <MultiSelectLayout MultiSelectItems="vegetablesList" OnItemClick="DoVegetablesListModelUpdate" />
 </div>
 
@@ -65,7 +65,7 @@
         vegetablesList.Data.Add(new MultiSelectItem("1", "Potatoes"));
         vegetablesList.Data.Add(new MultiSelectItem("2", "Tomatoes", true, "101"));
         vegetablesList.Data.Add(new MultiSelectItem("4", "Carrots", true, "102"));
-        vegetablesList.Data.Add(new MultiSelectItem("3", "Spinach"));
+        vegetablesList.Data.Add(new MultiSelectItem("3", "Spinach", true, "103"));
         vegetablesList.Data.Add(new MultiSelectItem("5", "Beets"));
         vegetablesList.Data.Add(new MultiSelectItem("6", "Radishes"));
 

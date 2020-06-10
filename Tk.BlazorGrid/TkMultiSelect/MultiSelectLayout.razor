@@ -3,11 +3,11 @@
     {
         if (item.IsSelected)
         {
-            <div class="btn-group">
+            <div class="btn-group mb-1">
                 <button type="button" class="btn btn-light btn-sm">@item.Text</button>
                 <button type="button"
                         class="btn btn-light text-danger btn-sm"
-                        @onclick="@(async () => await ProcessMultiSelectItem(ItemAction.Remove, @item.Id))" >
+                        @onclick="@(async () => await ProcessMultiSelectItem(ItemAction.Remove, @item.Id))">
                     &times;
                 </button>
             </div>
@@ -56,7 +56,7 @@
             _Selected = 0;   //reset the drop down
         }
     }
-
+       
     protected async Task ProcessMultiSelectItem(ItemAction itemAction, string Id)
     {
         var item = MultiSelectItems.Data.SingleOrDefault(x => x.Id == Id);
@@ -71,10 +71,10 @@
                 break;
             default:
                 break;
-        }
+        }        
 
         //Captured = item.Text;
         await OnItemClick.InvokeAsync(MultiSelectItems);
-    }
+    }  
 
 }
