@@ -12,7 +12,17 @@
         <div class="col-11">
             @if (gridBase.EnableSearch)
             {
-            <InputText id="searchText" @bind-Value="gridBase.Search" @onblur="DoPageSearch" placeholder="Search by Summary only (case sensitive + Tab to execute action)" class="form-control" />
+                <div class="input-group">
+                    <div class="custom-file">
+                        <InputText id="searchText" @bind-Value="gridBase.Search" placeholder="Search..." class="form-control" />                        
+                    </div>
+                    <div class="input-group-append">
+                        <button type="button" class="btn" @onclick="DoPageSearch"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="button" class="btn" @onclick="DoReset"><i class="fas fa-sync"></i></button>
+                    </div>
+                </div>
             }
         </div>
     </div>
@@ -30,13 +40,19 @@
 
 
     protected async Task DoPageSizeChange(ChangeEventArgs e)
-    {   
+    {
         gridBase.PageSize = Convert.ToInt32(e.Value.ToString());
         await OnPageSizeChange.InvokeAsync(gridBase);
     }
 
     protected async Task DoPageSearch()
     {
+        await OnPageSearch.InvokeAsync(gridBase);
+    }
+
+    protected async Task DoReset()
+    {
+        gridBase.Search = string.Empty;
         await OnPageSearch.InvokeAsync(gridBase);
     }
 }
