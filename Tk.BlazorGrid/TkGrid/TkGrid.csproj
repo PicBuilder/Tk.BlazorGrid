@@ -7,7 +7,7 @@
     <Version>0.0.1</Version>
     <PackageReleaseNotes>rearrange grid layout
 add onCreate function</PackageReleaseNotes>
-    <PackageId>TkGrid-tfilla1-beta</PackageId>
+    <PackageId>TkGrid-tfilla1</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

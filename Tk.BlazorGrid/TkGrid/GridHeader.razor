@@ -3,7 +3,7 @@
     @if (gridBase.EnableSearch)
     {
         <div class="input-group w-100">
-            @if (gridBase.EnableFilter)
+            @if (EnableFilter)
             {
                 <div class="input-group-prepend">
                     <label class="input-group-text">Filter</label>
@@ -45,7 +45,8 @@
 @code {
     [Parameter]
     public GridBase gridBase { get; set; }
-
+    [Parameter]
+    public bool EnableFilter { get; set; } = false;
     [Parameter]
     public List<string> filters { get; set; }
 

@@ -24,7 +24,9 @@ else
 {
     <div class="card">
         <div class="toolbar card-header bg-transparent d-flex align-items-center">
-            <GridHeader gridBase="grid" OnPageSearch="GetPageData" filters="something" OnFilterChange="GetPageData" />
+            <GridHeader gridBase="grid"
+                        OnPageSearch="GetPageData" EnableFilter="true" filters="something"
+        OnFilterChange="GetPageData" />
         </div>
         <div class="card-body p-0">
             <table class="table">
