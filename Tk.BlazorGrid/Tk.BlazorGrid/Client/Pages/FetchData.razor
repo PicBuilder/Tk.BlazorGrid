@@ -2,14 +2,19 @@
 @using Tk.BlazorGrid.Shared
 @using TkGrid
 @inject HttpClient Http
+<div class="card d-none">
+    <div class="card-header">
+        <h1 class="card-title">Weather forecast</h1>
+    </div>
+    <div class="card-body">
+        <p class="card-text">This component demonstrates fetching data from the server.</p>
+        <ul class="list-group">
+            <li class="list-group-item">Uses Bootstrap 4 table and form control styling</li>
+            <li class="list-group-item">Server side paging only (only min specified records are returned)</li>
+        </ul>
+    </div>
+</div>
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
-<ul>
-    <li>Uses Bootstrap 4 table and form control styling</li>
-    <li>Server side paging only (only min specified records are returned)</li>
-</ul>
 
 @if (weatherForecasts == null)
 {
@@ -17,67 +22,83 @@
 }
 else
 {
-    <GridHeader gridBase="grid" OnPageSizeChange="GetPageData" OnPageSearch="GetPageData" />
-
-    <table class="table">
-        <thead>
-            <tr>
-                <GridColumnHeader gridBase="grid"
+    <div class="card">
+        <div class="toolbar card-header bg-transparent d-flex align-items-center">
+            <GridHeader gridBase="grid" OnPageSearch="GetPageData" filters="something" OnFilterChange="GetPageData" />
+        </div>
+        <div class="card-body p-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.Date)"
                                           displayName="Date"
                                           OnSort="GetPageData" />
 
-                <GridColumnHeader gridBase="grid"
+                        <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.TemperatureC)"
                                           displayName="Temp. (C)"
                                           OnSort="GetPageData" />
 
-                <GridColumnHeader gridBase="grid"
+                        <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.TemperatureF)"
                                           displayName="Temp. (F)"
                                           OnSort="GetPageData" />
 
-                <GridColumnHeader gridBase="grid"
+                        <GridColumnHeader gridBase="grid"
                                           columnName="@nameof(weatherForecast.Summary)"
                                           displayName="Summary"
-                                          OnSort="GetPageData" />     
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in weatherForecasts.Data)
-            {
-            <tr>
-                <td>@forecast.Date.ToShortDateString()</td>
-                <td>@forecast.TemperatureC</td>
-                <td>@forecast.TemperatureF</td>
-                <td>@forecast.Summary</td>
-                <td>
-                    <a href="@($"WeatherForecast/edit/{forecast.Id}")" class="btn btn-link">
-                        <span class="oi oi-pencil text-secondary small" aria-hidden="true"></span>
-                    </a>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+                                          OnSort="GetPageData" />
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in weatherForecasts.Data)
+                    {
+                        <tr>
+                            <td>@forecast.Date.ToShortDateString()</td>
+                            <td>@forecast.TemperatureC</td>
+                            <td>@forecast.TemperatureF</td>
+                            <td>@forecast.Summary</td>
+                            <td>
+                                <a href="@($"WeatherForecast/edit/{forecast.Id}")" class="btn btn-link">
+                                    <span class="oi oi-pencil text-secondary small" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-transparent d-flex align-items-center">
+            <GridFooter gridBase="grid" OnPageSizeChange="GetPageData" OnPageClick="GetPageData" />
+        </div>
+    </div>
 
-    <GridFooter gridBase="grid" OnPageClick="GetPageData" />
+
 }
 
 @code {
     protected GridBase grid { get; set; } = new GridBase();
     protected GridData<WeatherForecast> weatherForecasts;
     protected WeatherForecast weatherForecast;
-    
+    protected List<string> something;
     protected override async Task OnInitializedAsync()
     {
+        grid.EnableAdd = true;
+
+        something = new List<string>();
+        something.Add("Date");
+        something.Add("TemperatureF");
+        something.Add("TemperatureC");
+        something.Add("Summary");
+
         await GetPageData();
     }
 
     protected async Task GetPageData()
     {
-        weatherForecasts = await Http.GetFromJsonAsync<GridData<WeatherForecast>>($"WeatherForecast?search={grid.Search}&page={grid.CurrentPage}&pageSize={grid.PageSize}&sortColumnName={grid.SortColumnName}&sortDirection={grid.SortDirection}");
+        weatherForecasts = await Http.GetFromJsonAsync<GridData<WeatherForecast>>($"WeatherForecast?search={grid.Search}&page={grid.CurrentPage}&pageSize={grid.PageSize}&sortColumnName={grid.SortColumnName}&filterColumnName={grid.FilterColumnName}&sortDirection={grid.SortDirection}");
 
         if (weatherForecasts != null)
         {
