@@ -29,13 +29,45 @@ namespace Tk.BlazorGrid.Server.Controllers
             int page = 1,
             int pageSize = 10,
             string sortColumnName = "Id",
+            string filterColumnName = "Summary",
             string sortDirection = "desc"
             )
         {
             GridData<WeatherForecast> weatherForecasts = new GridData<WeatherForecast>();
             List<WeatherForecast> forecasts = new List<WeatherForecast>();
 
-            Expression<Func<WeatherForecast, bool>> searchCondition = x => x.Summary.Contains(search);
+            //Expression<Func<WeatherForecast, bool>> searchCondition;
+            if (!string.IsNullOrEmpty(search)) { 
+                switch (filterColumnName)
+                {
+                    case "Summary":
+                        forecasts = await _context.WeatherForecasts.Where(x => x.Summary.ToLower().Contains(search)).ToListAsync();
+                        //searchCondition = x => x.Summary.Contains(search);
+                        break;
+                    case "Date":
+                        forecasts = await _context.WeatherForecasts.Where(x => x.Date.ToString().Contains(search)).ToListAsync();
+                        //searchCondition = x => x.Date.ToString().Contains(search);
+                        break;
+                    case "TemperatureF":
+                        forecasts = await _context.WeatherForecasts.Where(x => x.TemperatureF.ToString().Contains(search)).ToListAsync();
+
+                        //searchCondition = x => x.TemperatureF.ToString().Contains(search);
+                        break;
+                    case "TemperatureC":
+                        forecasts = await _context.WeatherForecasts.Where(x => x.TemperatureC.ToString().Contains(search)).ToListAsync();
+
+                        //searchCondition = x => x.TemperatureC.ToString().Contains(search);
+                        break;
+                    default:
+                        forecasts = await _context.WeatherForecasts.Where(x => x.Summary.ToLower().ToString().Contains(search)).ToListAsync();
+                        //searchCondition = x => x.Summary.Contains(search);
+                        break;
+                }
+            } else
+            {
+                forecasts = await _context.WeatherForecasts.ToListAsync();
+            }
+
             bool orderByDescending = true;
             if (sortDirection == "asc")
             {
@@ -45,27 +77,49 @@ namespace Tk.BlazorGrid.Server.Controllers
             switch (sortColumnName)
             {
                 case "Date":
-                    forecasts = await _context.WeatherForecasts
-                      .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
-                      .PageBy(x => x.Date, page, pageSize, orderByDescending)
-                      .ToListAsync();
+                    if (orderByDescending)
+                    {
+                        forecasts = forecasts.OrderByDescending(x => x.Date).ToList();
+                    }
+                    else
+                    {
+                        forecasts = forecasts.OrderBy(x => x.Date).ToList();
+                    }
                     break;
                 case "Summary":
-                    forecasts = await _context.WeatherForecasts
-                      .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
-                      .PageBy(x => x.Summary, page, pageSize, orderByDescending)
-                      .ToListAsync();
+                    if (orderByDescending)
+                    {
+                        forecasts = forecasts.OrderByDescending(x => x.Summary).ToList();
+                    }
+                    else
+                    {
+                        forecasts = forecasts.OrderBy(x => x.Summary).ToList();
+                    }
+                    //forecasts = await _context.WeatherForecasts
+                    //  .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
+                    //  .PageBy(x => x.Summary, page, pageSize, orderByDescending)
+                    //  .ToListAsync();
                     break;
                 default:
-                    forecasts = await _context.WeatherForecasts
-                      .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
-                      .PageBy(x => x.Id, page, pageSize, orderByDescending)
-                      .ToListAsync();
+
+                    if (orderByDescending)
+                    {
+                        forecasts = forecasts.OrderByDescending(x => x.Id).ToList();
+                    }
+                    else
+                    {
+                        forecasts = forecasts.OrderBy(x => x.Id).ToList();
+                    }
+                    //forecasts = await _context.WeatherForecasts
+                    //  .WhereIf(!string.IsNullOrEmpty(search), searchCondition)
+                    //  .PageBy(x => x.Id, page, pageSize, orderByDescending)
+                    //  .ToListAsync();
                     break;
             }
-
+            var forest = forecasts.Count();
+            forecasts = forecasts.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             weatherForecasts.Data.AddRange(forecasts);
-            weatherForecasts.TotalCount = await _context.WeatherForecasts.WhereIf(!string.IsNullOrEmpty(search), searchCondition).CountAsync();
+            weatherForecasts.TotalCount = forest;//forecasts.Count(); //await _context.WeatherForecasts.WhereIf(!string.IsNullOrEmpty(search), searchCondition).CountAsync();
             weatherForecasts.PageSize = pageSize;
 
             return weatherForecasts;

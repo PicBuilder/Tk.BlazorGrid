@@ -2,26 +2,44 @@
 <EditForm Model="@gridBase" class="form-inline w-100">
     @if (gridBase.EnableSearch)
     {
-        <div class="w-75">
-            <div class="input-group">
-                <InputText id="searchText" @bind-Value="gridBase.Search" placeholder="Search..." class="form-control" />
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-outline-dark" @onclick="DoPageSearch"><i class="fas fa-search"></i></button>
+        <div class="input-group w-100">
+            @if (gridBase.EnableFilter)
+            {
+                <div class="input-group-prepend">
+                    <label class="input-group-text">Filter</label>
                 </div>
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-outline-dark" @onclick="DoReset"><i class="fas fa-sync"></i></button>
-                </div>
+                <InputSelect class="custom-select" @bind-Value="gridBase.FilterColumnName" @onchange="DoFilterChange">
+                    @foreach (var f in filters)
+                    {
+                        <option value="@f">@f</option>
+                    }
+                </InputSelect>
+            }
+            <InputText id="searchText" @bind-Value="gridBase.Search" placeholder="Search..." class="form-control" />
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-dark" @onclick="DoPageSearch"><i class="fas fa-search"></i></button>
             </div>
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-dark" @onclick="DoReset"><i class="fas fa-sync"></i></button>
+            </div>
+            @if (gridBase.EnableAdd)
+            {
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-primary" @onclick="DoCreate">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            }
         </div>
     }
-    @if (gridBase.EnableAdd)
+    @*@if (gridBase.EnableAdd)
     {
         <div class="ml-auto">
             <button type="button" class="btn icon btn-primary" @onclick="DoCreate">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
-    }
+    }*@
 </EditForm>
 
 @code {
@@ -29,10 +47,15 @@
     public GridBase gridBase { get; set; }
 
     [Parameter]
+    public List<string> filters { get; set; }
+
+    [Parameter]
     public EventCallback<GridBase> OnPageSearch { get; set; }
 
     [Parameter]
     public EventCallback<GridBase> OnCreate { get; set; }
+    [Parameter]
+    public EventCallback<GridBase> OnFilterChange { get; set; }
 
     protected async Task DoPageSearch()
     {
@@ -44,6 +67,10 @@
         await OnCreate.InvokeAsync(gridBase);
     }
 
+    protected async Task DoFilterChange()
+    {
+        await OnFilterChange.InvokeAsync(gridBase);
+    }
     protected async Task DoReset()
     {
         gridBase.Search = string.Empty;
