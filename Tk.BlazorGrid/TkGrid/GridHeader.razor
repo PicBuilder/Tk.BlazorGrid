@@ -1,6 +1,6 @@
 ﻿
 <EditForm Model="@gridBase" class="form-inline w-100">
-    @if (gridBase.EnableSearch)
+    @if (EnableToolbar)
     {
         <div class="input-group w-100">
             @if (EnableFilter)
@@ -22,7 +22,7 @@
             <div class="input-group-append">
                 <button type="button" class="btn btn-outline-dark" @onclick="DoReset"><i class="fas fa-sync"></i></button>
             </div>
-            @if (gridBase.EnableAdd)
+            @if (EnableAdd)
             {
             <div class="input-group-append">
                 <button type="button" class="btn btn-outline-primary" @onclick="DoCreate">
@@ -45,8 +45,14 @@
 @code {
     [Parameter]
     public GridBase gridBase { get; set; }
+
+    [Parameter]
+    public bool EnableAdd { get; set; } = false;
     [Parameter]
     public bool EnableFilter { get; set; } = false;
+    [Parameter]
+    public bool EnableToolbar { get; set; } = false;
+
     [Parameter]
     public List<string> filters { get; set; }
 
