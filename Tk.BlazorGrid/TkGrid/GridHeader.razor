@@ -1,31 +1,27 @@
 ﻿
-<EditForm Model="@gridBase">
-    <div class="form-row mb-3">
-        <div class="col-1">
-            <select id="pageValue" @onchange="DoPageSizeChange" class="form-control">
-                <option selected value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="100">100</option>
-            </select>
-        </div>
-        <div class="col-11">
-            @if (gridBase.EnableSearch)
-            {
-                <div class="input-group">
-                    <div class="custom-file">
-                        <InputText id="searchText" @bind-Value="gridBase.Search" placeholder="Search..." class="form-control" />                        
-                    </div>
-                    <div class="input-group-append">
-                        <button type="button" class="btn" @onclick="DoPageSearch"><i class="fas fa-search"></i></button>
-                    </div>
-                    <div class="input-group-append">
-                        <button type="button" class="btn" @onclick="DoReset"><i class="fas fa-sync"></i></button>
-                    </div>
+<EditForm Model="@gridBase" class="form-inline w-100">
+    @if (gridBase.EnableSearch)
+    {
+        <div class="w-75">
+            <div class="input-group">
+                <InputText id="searchText" @bind-Value="gridBase.Search" placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-dark" @onclick="DoPageSearch"><i class="fas fa-search"></i></button>
                 </div>
-            }
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-dark" @onclick="DoReset"><i class="fas fa-sync"></i></button>
+                </div>
+            </div>
         </div>
-    </div>
+    }
+    @if (gridBase.EnableAdd)
+    {
+        <div class="ml-auto">
+            <button type="button" class="btn icon btn-primary" @onclick="DoCreate">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    }
 </EditForm>
 
 @code {
@@ -33,21 +29,19 @@
     public GridBase gridBase { get; set; }
 
     [Parameter]
-    public EventCallback<GridBase> OnPageSizeChange { get; set; }
-
-    [Parameter]
     public EventCallback<GridBase> OnPageSearch { get; set; }
 
-
-    protected async Task DoPageSizeChange(ChangeEventArgs e)
-    {
-        gridBase.PageSize = Convert.ToInt32(e.Value.ToString());
-        await OnPageSizeChange.InvokeAsync(gridBase);
-    }
+    [Parameter]
+    public EventCallback<GridBase> OnCreate { get; set; }
 
     protected async Task DoPageSearch()
     {
         await OnPageSearch.InvokeAsync(gridBase);
+    }
+
+    protected async Task DoCreate()
+    {
+        await OnCreate.InvokeAsync(gridBase);
     }
 
     protected async Task DoReset()

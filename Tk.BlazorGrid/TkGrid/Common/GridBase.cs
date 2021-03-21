@@ -15,6 +15,8 @@ namespace TkGrid
 
 		public bool EnableSearch { get; set; } = false;
 
+		public bool EnableAdd { get; set; } = false;
+
 		public int MaxPages { get; set; } = 10;
 
 		//frontend required stuff
