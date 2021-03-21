@@ -1,47 +1,57 @@
 ﻿@if (gridBase.CurrentPage <= gridBase.MaxPage)
 {
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @if (PagerHelpers.ShowLeftPagerButton(gridBase.MaxPages, gridBase.PagerTotalCount, gridBase.CurrentPage))
-            {
-                <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(gridBase.MinPage-1))">Previous</button></li>
-            }
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <EditForm Model="@gridBase" class="mr-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="pageValue">Items per Page</label>
+                    </div>
+                    <select id="pageValue" @onchange="DoPageSizeChange" class="custom-select">
+                        <option selected value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </EditForm>
+        </li>
+        <li class="nav-item">
+            <label class="mr-3 align-middle" style="padding-top:7px;">@gridBase.TotalCount result(s) found</label>
+        </li>
+        <li class="nav-item">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @if (PagerHelpers.ShowLeftPagerButton(gridBase.MaxPages, gridBase.PagerTotalCount, gridBase.CurrentPage))
+                    {
+                        <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(gridBase.MinPage-1))">Previous</button></li>
+                    }
 
-            @for (var i = gridBase.MinPage; i <= gridBase.MaxPage; i++)
-            {
-                var tempint = i;
-                if (PagerHelpers.IsActivePage(gridBase.CurrentPage, i))
-                {
-                    <li class="page-item active"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(tempint))">@i</button></li>
-                }
-                else
-                {
-                    <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(tempint))">@i</button></li>
-                }
-            }
+                    @for (var i = gridBase.MinPage; i <= gridBase.MaxPage; i++)
+                    {
+                        var tempint = i;
+                        if (PagerHelpers.IsActivePage(gridBase.CurrentPage, i))
+                        {
+                            <li class="page-item active"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(tempint))">@i</button></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(tempint))">@i</button></li>
+                        }
+                    }
 
-            @if (PagerHelpers.ShowRightPagerButton(gridBase.MaxPages, gridBase.PagerTotalCount, gridBase.CurrentPage))
-            {
-                <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(gridBase.MaxPage+1))">Next</button></li>
-            }
-        </ul>
-    </nav>
-    <div class="ml-auto">
-        @gridBase.TotalCount result(s) found
-    </div>
-    <EditForm Model="@gridBase" class="ml-auto">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="pageValue">Items per Page</label>
-            </div>
-            <select id="pageValue" @onchange="DoPageSizeChange" class="custom-select">
-                <option selected value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="100">100</option>
-            </select>
-        </div>
-    </EditForm>
+                    @if (PagerHelpers.ShowRightPagerButton(gridBase.MaxPages, gridBase.PagerTotalCount, gridBase.CurrentPage))
+                    {
+                        <li class="page-item"><button type="button" class="page-link" @onclick="@(async () => await GetPagedData(gridBase.MaxPage+1))">Next</button></li>
+                    }
+                </ul>
+            </nav>
+        </li>
+    </ul>
+
+
+
+
 }
 
 @code {

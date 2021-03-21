@@ -2,7 +2,7 @@
 <EditForm Model="@gridBase" class="form-inline w-100">
     @if (gridBase.EnableSearch)
     {
-        <div class="w-75">
+        <div class="w-100">
             <div class="input-group">
                 <InputText id="searchText" @bind-Value="gridBase.Search" placeholder="Search..." class="form-control" />
                 <div class="input-group-append">
@@ -11,17 +11,17 @@
                 <div class="input-group-append">
                     <button type="button" class="btn btn-outline-dark" @onclick="DoReset"><i class="fas fa-sync"></i></button>
                 </div>
+                @if (gridBase.EnableAdd)
+                {
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" @onclick="DoCreate"><i class="fas fa-plus"></i></button>
+                    </div>
+                }
             </div>
+
         </div>
     }
-    @if (gridBase.EnableAdd)
-    {
-        <div class="ml-auto">
-            <button type="button" class="btn icon btn-primary" @onclick="DoCreate">
-                <i class="fas fa-plus"></i>
-            </button>
-        </div>
-    }
+
 </EditForm>
 
 @code {
