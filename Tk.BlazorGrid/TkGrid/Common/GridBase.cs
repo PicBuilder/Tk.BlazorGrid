@@ -13,12 +13,12 @@ namespace TkGrid
 		public int PageSize { get; set; } = 5;
 		public string Search { get; set; }
 
-		//public bool EnableSearch { get; set; } = false;
+        public bool EnableSearch { get; set; } = false;
 
-		//public bool EnableAdd { get; set; } = false;
-		//public bool EnableFilter { get; set; } = false;
+        public bool EnableAdd { get; set; } = false;
+        public bool EnableFilter { get; set; } = false;
 
-		public int MaxPages { get; set; } = 10;
+        public int MaxPages { get; set; } = 10;
 
 		//frontend required stuff
 		public int CurrentPage { get; set; }
@@ -37,10 +37,10 @@ namespace TkGrid
 		//custom
 		public GridBase ApplyGrid()
 		{
-			//EnableSearch = true;
-			//EnableFilter = true;
-			//EnableAdd = true;
-			CurrentPage = PagerHelpers.GetCurrentPage(CurrentPage.ToString());
+            EnableSearch = true;
+            EnableFilter = true;
+            EnableAdd = true;
+            CurrentPage = PagerHelpers.GetCurrentPage(CurrentPage.ToString());
 			PagerTotalCount = PagerHelpers.GetTotalPages(PageSize, TotalCount);
 			MinPage = PagerHelpers.GetMinPageToRender(MaxPages, PagerTotalCount, CurrentPage);
 			MaxPage = PagerHelpers.GetMaxPageToRender(MaxPages, PagerTotalCount, CurrentPage);
